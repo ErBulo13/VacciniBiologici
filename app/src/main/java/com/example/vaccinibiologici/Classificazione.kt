@@ -5,6 +5,7 @@ package com.example.vaccinibiologici
 //La valutazione si basa su 3 criteri: Terapia, Età e patologie concomitanti.
 //Se diversi criteri forniscono suggerimenti diversi sullo stesso vaccino,
 //l'esito finale sarà quello con severità più alta.
+
 enum class Classificazione(val severita: Int) {
     RACCOMANDATO(1),
     POSSIBILE(2),

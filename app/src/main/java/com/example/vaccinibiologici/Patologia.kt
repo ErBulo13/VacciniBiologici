@@ -2,6 +2,7 @@ package com.example.vaccinibiologici
 
 //Patologie concomitanti considerate dalle regole logiche.
 //L'etichetta è la forma leggibile del valore, usata nell'interfaccia.
+
 enum class Patologia(val etichetta: String) {
     ASPLENIA("Asplenia/iposplenia"),
     DEFICIT_COMPLEMENTO("Deficit del complemento"),
