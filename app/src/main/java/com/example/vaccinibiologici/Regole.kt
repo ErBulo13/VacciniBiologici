@@ -15,8 +15,10 @@ data class RegolaPatologia(
     val motivazione: String
 )
 
+//La terapia null indica una regola valida per tutte le terapie. Implementato per
+//evitare di inserire la controindicazione 4 volte per ogni vaccino vivo attenuato.
 data class RegolaTerapia(
-    val terapia: Terapia,
+    val terapia: Terapia?,
     val classificazione: Classificazione,
     val motivazione: String
 )

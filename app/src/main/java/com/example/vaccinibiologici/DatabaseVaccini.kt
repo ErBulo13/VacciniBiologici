@@ -10,6 +10,7 @@ object DatabaseVaccini {
 
     val vaccini: List<Vaccino> = listOf(
 
+        //Vaccini non vivi
         Vaccino(
             nome = "Antinfluenzale inattivato",
             vivoAttenuato = false,
@@ -174,7 +175,7 @@ object DatabaseVaccini {
                 RegolaTerapia(
                     terapia = Terapia.ANTI_TNF,
                     classificazione = Classificazione.RACCOMANDATO,
-                    motivazione = "Raccomandato nei pazienti HBV-negativi"
+                    motivazione = "Raccomandato in terapia anti-TNF nei pazienti HBV-negativi"
                 )
             )
         ),
@@ -358,6 +359,212 @@ object DatabaseVaccini {
             nome = "Mpox (MVA-BN)",
             vivoAttenuato = false
         ),
+
+        //Vaccini vivi attenuati
+        Vaccino(
+            nome = "Morbillo-Parotite-Rosolia (MPR)",
+            vivoAttenuato = true,
+            regolePatologia = listOf(
+                RegolaPatologia(
+                    patologia = Patologia.GRAVIDANZA,
+                    classificazione = Classificazione.CONTROINDICATO,
+                    motivazione = "Vaccino vivo attenuato controindicato in gravidanza"
+                )
+            ),
+            regoleTerapia = listOf(
+                RegolaTerapia(
+                    terapia = null,
+                    classificazione = Classificazione.CONTROINDICATO,
+                    motivazione = "Vaccino vivo attenuato in paziente in terapia immunosoppressiva"
+                )
+            )
+        ),
+
+        Vaccino(
+            nome = "Varicella",
+            vivoAttenuato = true,
+            regolePatologia = listOf(
+                RegolaPatologia(
+                    patologia = Patologia.GRAVIDANZA,
+                    classificazione = Classificazione.CONTROINDICATO,
+                    motivazione = "Vaccino vivo attenuato controindicato in gravidanza"
+                )
+            ),
+            regoleTerapia = listOf(
+                RegolaTerapia(
+                    terapia = null,
+                    classificazione = Classificazione.CONTROINDICATO,
+                    motivazione = "Vaccino vivo attenuato in paziente in terapia immunosoppressiva"
+                )
+            )
+        ),
+
+        Vaccino(
+            nome = "Morbillo-Parotite-Rosolia-Varicella (MPRV)",
+            vivoAttenuato = true,
+            regolePatologia = listOf(
+                RegolaPatologia(
+                    patologia = Patologia.GRAVIDANZA,
+                    classificazione = Classificazione.CONTROINDICATO,
+                    motivazione = "Vaccino vivo attenuato controindicato in gravidanza"
+                )
+            ),
+            regoleTerapia = listOf(
+                RegolaTerapia(
+                    terapia = null,
+                    classificazione = Classificazione.CONTROINDICATO,
+                    motivazione = "Vaccino vivo attenuato in paziente in terapia immunosoppressiva"
+                )
+            )
+        ),
+
+        Vaccino(
+            nome = "Herpes Zoster vivo (Zostavax)",
+            vivoAttenuato = true,
+            regoleEta = listOf(
+                RegolaEta(
+                    fascia = FasciaEta(minima = 50),
+                    classificazione = Classificazione.RACCOMANDATO,
+                    motivazione = "Indicato dai 50 anni nella popolazione generale"
+                )
+            ),
+            regoleTerapia = listOf(
+                RegolaTerapia(
+                    terapia = null,
+                    classificazione = Classificazione.CONTROINDICATO,
+                    motivazione = "Vaccino vivo attenuato in paziente in terapia immunosoppressiva"
+                )
+            )
+        ),
+
+        Vaccino(
+            nome = "Febbre gialla",
+            vivoAttenuato = true,
+            regolePatologia = listOf(
+                RegolaPatologia(
+                    patologia = Patologia.GRAVIDANZA,
+                    classificazione = Classificazione.CONTROINDICATO,
+                    motivazione = "Vaccino vivo attenuato controindicato in gravidanza"
+                )
+            ),
+            regoleTerapia = listOf(
+                RegolaTerapia(
+                    terapia = null,
+                    classificazione = Classificazione.CONTROINDICATO,
+                    motivazione = "Vaccino vivo attenuato in paziente in terapia immunosoppressiva"
+                )
+            )
+        ),
+
+        Vaccino(
+            nome = "Antinfluenzale intranasale (LAIV)",
+            vivoAttenuato = true,
+            regoleEta = listOf(
+                RegolaEta(
+                    fascia = FasciaEta(minima = 50),
+                    classificazione = Classificazione.CONTROINDICATO,
+                    motivazione = "Non indicato oltre i 49 anni"
+                )
+            ),
+            regoleTerapia = listOf(
+                RegolaTerapia(
+                    terapia = null,
+                    classificazione = Classificazione.CONTROINDICATO,
+                    motivazione = "Vaccino vivo attenuato in paziente in terapia immunosoppressiva"
+                )
+            )
+        ),
+
+        Vaccino(
+            nome = "BCG (antitubercolare)",
+            vivoAttenuato = true,
+            regolePatologia = listOf(
+                RegolaPatologia(
+                    patologia = Patologia.TUBERCOLOSI_LATENTE,
+                    classificazione = Classificazione.CONTROINDICATO,
+                    motivazione = "Controindicato in presenza di infezione tubercolare latente"
+                ),
+                RegolaPatologia(
+                    patologia = Patologia.GRAVIDANZA,
+                    classificazione = Classificazione.CONTROINDICATO,
+                    motivazione = "Vaccino vivo attenuato controindicato in gravidanza"
+                )
+            ),
+            regoleTerapia = listOf(
+                RegolaTerapia(
+                    terapia = null,
+                    classificazione = Classificazione.CONTROINDICATO,
+                    motivazione = "Vaccino vivo attenuato in paziente in terapia immunosoppressiva"
+                ),
+                RegolaTerapia(
+                    terapia = Terapia.ANTI_TNF,
+                    classificazione = Classificazione.CONTROINDICATO,
+                    motivazione = "La terapia anti-TNF aumenta il rischio di riattivazione tubercolare"
+                )
+            )
+        ),
+
+        Vaccino(
+            nome = "Febbre tifoide orale (Ty21a)",
+            vivoAttenuato = true,
+            regoleTerapia = listOf(
+                RegolaTerapia(
+                    terapia = null,
+                    classificazione = Classificazione.CONTROINDICATO,
+                    motivazione = "Vaccino vivo attenuato in paziente in terapia immunosoppressiva"
+                )
+            )
+        ),
+
+        Vaccino(
+            nome = "Rotavirus",
+            vivoAttenuato = true,
+            regoleEta = listOf(
+                RegolaEta(
+                    fascia = FasciaEta(minima = 1),
+                    classificazione = Classificazione.CONTROINDICATO,
+                    motivazione = "Vaccinazione prevista esclusivamente nel primo anno di vita"
+                )
+            ),
+            regoleTerapia = listOf(
+                RegolaTerapia(
+                    terapia = null,
+                    classificazione = Classificazione.CONTROINDICATO,
+                    motivazione = "Vaccino vivo attenuato in paziente in terapia immunosoppressiva"
+                )
+            )
+        ),
+
+        Vaccino(
+            nome = "Poliomielite orale (OPV)",
+            vivoAttenuato = true,
+            regoleTerapia = listOf(
+                RegolaTerapia(
+                    terapia = null,
+                    classificazione = Classificazione.CONTROINDICATO,
+                    motivazione = "Vaccino vivo attenuato in paziente in terapia immunosoppressiva"
+                )
+            )
+        ),
+
+        Vaccino(
+            nome = "Dengue (Qdenga)",
+            vivoAttenuato = true,
+            regolePatologia = listOf(
+                RegolaPatologia(
+                    patologia = Patologia.GRAVIDANZA,
+                    classificazione = Classificazione.CONTROINDICATO,
+                    motivazione = "Vaccino vivo attenuato controindicato in gravidanza"
+                )
+            ),
+            regoleTerapia = listOf(
+                RegolaTerapia(
+                    terapia = null,
+                    classificazione = Classificazione.CONTROINDICATO,
+                    motivazione = "Vaccino vivo attenuato in paziente in terapia immunosoppressiva"
+                )
+            )
+        )
 
     )
 }
