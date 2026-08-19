@@ -22,3 +22,10 @@ data class RegolaTerapia(
     val classificazione: Classificazione,
     val motivazione: String
 )
+
+//Serve al motore per trattare in modo uniforme gli esiti provenienti
+//dai tre tipi di regola.
+data class Esito(
+    val classificazione: Classificazione,
+    val motivazione: String
+)
