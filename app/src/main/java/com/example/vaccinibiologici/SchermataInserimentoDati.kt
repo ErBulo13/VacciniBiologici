@@ -36,7 +36,7 @@ import androidx.compose.material3.Icon
 * Qui la funzionalità sperimentale è ExposedDropdownMenuBox, API di Google*/
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SchermataInserimentoDati() {
+fun SchermataInserimentoDati(onCalcolaClick: (Paziente) -> Unit) {
     var eta by remember { mutableStateOf("") }
     val patologieSelezionate = remember {mutableStateListOf<Patologia>() }
     var sezionePatologieAperta by remember {mutableStateOf(false) }
@@ -44,6 +44,8 @@ fun SchermataInserimentoDati() {
     val vacciniEffettuati = remember { mutableStateListOf<String>() }
     var sezioneVacciniAperta by remember { mutableStateOf(false)}
     var menuAperto by remember { mutableStateOf(false) }
+    val etaNumerica = eta.toIntOrNull()
+    val datiValidi = etaNumerica != null && etaNumerica >= 0 && terapiaSelezionata != null
 
     Column(
         modifier = Modifier
@@ -172,7 +174,16 @@ fun SchermataInserimentoDati() {
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
-            onClick = { /* logica di calcolo da inserire  */ },
+            onClick = {
+                val paziente = Paziente(
+                    eta = etaNumerica ?: 0,
+                    terapia = terapiaSelezionata ?: Terapia.ANTI_TNF,
+                    patologie = patologieSelezionate.toSet(),
+                    vacciniGiaEffettuati = vacciniEffettuati.toSet()
+                )
+                onCalcolaClick(paziente)
+            },
+            enabled = datiValidi,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = "Calcola raccomandazioni")

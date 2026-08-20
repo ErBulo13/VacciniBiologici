@@ -20,6 +20,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.vaccinibiologici.ui.theme.VacciniBiologiciTheme
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +45,10 @@ class MainActivity : ComponentActivity() {
 fun AppVaccini() {
     val navController = rememberNavController()
 
+    //Il paziente costruito nella schermata di inserimento viene conservato qui
+    //e passato alla schermata dei risultati.
+    var paziente by remember { mutableStateOf<Paziente?>(null) }
+
     NavHost(
         navController = navController,
         startDestination = "iniziale"
@@ -51,7 +59,18 @@ fun AppVaccini() {
             )
         }
         composable("inserimento") {
-            SchermataInserimentoDati()
+            SchermataInserimentoDati(
+                onCalcolaClick = { pazienteInserito ->
+                    paziente = pazienteInserito
+                    navController.navigate("risultati")
+                }
+            )
+        }
+        composable("risultati"){
+            val pazienteCorrente = paziente
+            if (pazienteCorrente != null) {
+                SchermataRisultati(paziente = pazienteCorrente)
+            }
         }
     }
 }
