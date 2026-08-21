@@ -50,9 +50,9 @@ object DatabaseVaccini {
             vivoAttenuato = false,
             regoleEta = listOf(
                 RegolaEta(
-                    fascia = FasciaEta(minima = 18),
+                    fascia = FasciaEta(),
                     classificazione = Classificazione.RACCOMANDATO,
-                    motivazione = "Adulto immunocompromesso"
+                    motivazione = "Paziente in terapia immunosoppressiva"
                 )
             ),
             regolePatologia = listOf(
@@ -89,9 +89,9 @@ object DatabaseVaccini {
             vivoAttenuato = false,
             regoleEta = listOf(
                 RegolaEta(
-                    fascia = FasciaEta(minima = 65),
+                    fascia = FasciaEta(),
                     classificazione = Classificazione.RACCOMANDATO,
-                    motivazione = "Età pari o superiore ai 65 anni"
+                    motivazione = "Paziente in terapia immunosoppressiva"
                 )
             ),
             regolePatologia = listOf(
@@ -124,6 +124,11 @@ object DatabaseVaccini {
             nome = "Herpes Zoster ricombinante (Shingrix)",
             vivoAttenuato = false,
             regoleEta = listOf(
+                RegolaEta(
+                    fascia = FasciaEta(massima = 17),
+                    classificazione = Classificazione.POSSIBILE,
+                    motivazione = "Valutabile nei pazienti immunocompromessi fino ai 17 anni"
+                ),
                 RegolaEta(
                     fascia = FasciaEta(minima = 18),
                     classificazione = Classificazione.RACCOMANDATO,
@@ -175,7 +180,7 @@ object DatabaseVaccini {
                 RegolaTerapia(
                     terapia = Terapia.ANTI_TNF,
                     classificazione = Classificazione.RACCOMANDATO,
-                    motivazione = "Terapia anti-TNF in paziente HBV-negativi"
+                    motivazione = "Terapia anti-TNF in paziente HBV-negativo"
                 )
             )
         ),
@@ -221,14 +226,19 @@ object DatabaseVaccini {
             vivoAttenuato = false,
             regoleEta = listOf(
                 RegolaEta(
-                    fascia = FasciaEta(massima = 26),
-                    classificazione = Classificazione.RACCOMANDATO,
-                    motivazione = "Paziente con età inferiore o pari a 26 anni"
+                    fascia = FasciaEta(massima = 8),
+                    classificazione = Classificazione.POSSIBILE,
+                    motivazione = "Valutabile nei pazienti immunocompromessi fino a 8 anni"
                 ),
                 RegolaEta(
-                    fascia = FasciaEta(minima = 27, massima = 45),
+                    fascia = FasciaEta(minima = 9, massima = 45),
+                    classificazione = Classificazione.RACCOMANDATO,
+                    motivazione = "Paziente immunocompromesso con età compresa tra i 9 e i 45 anni"
+                ),
+                RegolaEta(
+                    fascia = FasciaEta(minima = 46),
                     classificazione = Classificazione.POSSIBILE,
-                    motivazione = "Valutabile tra 27 e 45 anni"
+                    motivazione = "Valutabile nei pazienti immunocompromessi oltre i 45 anni"
                 )
             ),
             regolePatologia = listOf(
@@ -315,6 +325,11 @@ object DatabaseVaccini {
             nome = "Virus Respiratorio Sinciziale (RSV)",
             vivoAttenuato = false,
             regoleEta = listOf(
+                RegolaEta(
+                    fascia = FasciaEta(massima = 49),
+                    classificazione = Classificazione.POSSIBILE,
+                    motivazione = "Valutabile nei pazienti immunocompromessi prima dei 50 anni"
+                ),
                 RegolaEta(
                     fascia = FasciaEta(minima = 50),
                     classificazione = Classificazione.RACCOMANDATO,
@@ -421,13 +436,6 @@ object DatabaseVaccini {
         Vaccino(
             nome = "Herpes Zoster vivo (Zostavax)",
             vivoAttenuato = true,
-            regoleEta = listOf(
-                RegolaEta(
-                    fascia = FasciaEta(minima = 50),
-                    classificazione = Classificazione.RACCOMANDATO,
-                    motivazione = "Indicato dai 50 anni nella popolazione generale"
-                )
-            ),
             regoleTerapia = listOf(
                 RegolaTerapia(
                     terapia = null,
