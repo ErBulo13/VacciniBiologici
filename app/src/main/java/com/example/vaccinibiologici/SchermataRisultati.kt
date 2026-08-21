@@ -41,19 +41,25 @@ fun SchermataRisultati(paziente: Paziente) {
 //Scheda di un singolo vaccino: nome, classificazione, motivazioni che l'hanno
 //determinata ed eventuali note prodotte da criteri superati.
 @Composable
-private fun SchedaRisultato(risultato: RisultatoValutazione){
+private fun SchedaRisultato(risultato: RisultatoValutazione) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(text = risultato.vaccino.nome)
 
         val marcatore = if (risultato.giaEffettuato) " *" else ""
         Text(text = risultato.classificazione.name + marcatore)
 
-        for(motivazione in risultato.motivazioni) {
-            Text(text = "• $motivazione")
+        if (risultato.motivazioni.isNotEmpty()) {
+            Text(text = "Motivazioni:")
+            for (motivazione in risultato.motivazioni) {
+                Text(text = "• $motivazione")
+            }
         }
 
-        for (nota in risultato.note) {
-            Text(text = "Nota: $nota")
+        if (risultato.note.isNotEmpty()) {
+            Text(text = "Note:")
+            for (nota in risultato.note) {
+                Text(text = "• $nota")
+            }
         }
     }
 }
