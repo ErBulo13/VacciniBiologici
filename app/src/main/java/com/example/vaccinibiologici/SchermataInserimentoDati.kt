@@ -30,6 +30,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.CenterAlignedTopAppBar
 
 /*L'annotazione @OptIn serve per dichiarare che sono consapevole che sto utilizzando una funzionalità
 * che è ancora in via sperimentale e potrebbe quindi ricevere nuove versioni.
@@ -47,146 +49,150 @@ fun SchermataInserimentoDati(onCalcolaClick: (Paziente) -> Unit) {
     val etaNumerica = eta.toIntOrNull()
     val datiValidi = etaNumerica != null && etaNumerica >= 0 && terapiaSelezionata != null
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(24.dp)
-    ) {
-        Text(text = "Inserimento dati paziente")
-        Spacer(modifier = Modifier.height(24.dp))
-
-        OutlinedTextField(
-            value = eta,
-            onValueChange = { nuovoValore -> eta = nuovoValore },
-            label = { Text("Età") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        /*Menù a tendina per la selezione della terapia.
-        * Poichè i valori mostrati sono generati automaticamente dalle entries dell'enum Terapia, se si volessero
-        * aggiungere nuove terapie non è necessario modificare questa schermata*/
-        ExposedDropdownMenuBox(
-            expanded = menuAperto,
-            onExpandedChange = { menuAperto = it }
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(title = { Text("Inserimento dati paziente") })
+        }
+    ) { spazioInterno ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(spazioInterno)
+                .verticalScroll(rememberScrollState())
+                .padding(24.dp)
         ) {
             OutlinedTextField(
-                value = terapiaSelezionata?.etichetta ?: "",
-                onValueChange = { },
-                readOnly = true,
-                label = { Text("Terapia biologica") },
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = menuAperto) },
-                modifier = Modifier
-                    .menuAnchor()
-                    .fillMaxWidth()
+                value = eta,
+                onValueChange = { nuovoValore -> eta = nuovoValore },
+                label = { Text("Età") },
+                modifier = Modifier.fillMaxWidth()
             )
-            androidx.compose.material3.DropdownMenu(
+            Spacer(modifier = Modifier.height(16.dp))
+
+            /*Menù a tendina per la selezione della terapia.
+            * Poichè i valori mostrati sono generati automaticamente dalle entries dell'enum Terapia, se si volessero
+            * aggiungere nuove terapie non è necessario modificare questa schermata*/
+            ExposedDropdownMenuBox(
                 expanded = menuAperto,
-                onDismissRequest = { menuAperto = false }
+                onExpandedChange = { menuAperto = it }
             ) {
-                Terapia.entries.forEach { terapia ->
-                    DropdownMenuItem(
-                        text = { Text(terapia.etichetta) },
-                        onClick = {
-                            terapiaSelezionata = terapia
-                            menuAperto = false
-                        }
-                    )
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        //Selezione multipla delle patologie concomitanti, in una sezione espandibile.
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { sezionePatologieAperta = !sezionePatologieAperta}
-        ) {
-            Text(text = "Patologie concomitanti (${patologieSelezionate.size})")
-            Icon(
-                imageVector = Icons.Filled.ArrowDropDown,
-                contentDescription = "Apri o chiudi l'elenco delle patologie"
-            )
-        }
-
-        if (sezionePatologieAperta) {
-            for (patologia in Patologia.entries) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ){
-                    Checkbox(
-                        checked = patologia in patologieSelezionate,
-                        onCheckedChange = { selezionata ->
-                            if(selezionata) {
-                                patologieSelezionate.add(patologia)
-                            } else{
-                                patologieSelezionate.remove(patologia)
-                            }
-                        }
-                    )
-                    Text(text = patologia.etichetta)
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        //Selezione multipla dei vaccini già effettuati, in una sezione espandibile.
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { sezioneVacciniAperta = !sezioneVacciniAperta}
-        ){
-            Text(text = "Vaccinazioni già effettuate (${vacciniEffettuati.size})")
-            Icon(
-                imageVector = Icons.Filled.ArrowDropDown,
-                contentDescription = "Apri o chiudi l'elenco delle vaccinazioni"
-            )
-        }
-
-        if (sezioneVacciniAperta){
-            for (vaccino in DatabaseVaccini.vaccini) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ){
-                    Checkbox(
-                        checked = vaccino.nome in vacciniEffettuati,
-                        onCheckedChange = { selezionato ->
-                            if (selezionato) {
-                                vacciniEffettuati.add(vaccino.nome)
-                            } else {
-                                vacciniEffettuati.remove(vaccino.nome)
-                            }
-                        }
-                    )
-                    Text(text = vaccino.nome)
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Button(
-            onClick = {
-                val paziente = Paziente(
-                    eta = etaNumerica ?: 0,
-                    terapia = terapiaSelezionata ?: Terapia.ANTI_TNF,
-                    patologie = patologieSelezionate.toSet(),
-                    vacciniGiaEffettuati = vacciniEffettuati.toSet()
+                OutlinedTextField(
+                    value = terapiaSelezionata?.etichetta ?: "",
+                    onValueChange = { },
+                    readOnly = true,
+                    label = { Text("Terapia biologica") },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = menuAperto) },
+                    modifier = Modifier
+                        .menuAnchor()
+                        .fillMaxWidth()
                 )
-                onCalcolaClick(paziente)
-            },
-            enabled = datiValidi,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = "Calcola raccomandazioni")
+                androidx.compose.material3.DropdownMenu(
+                    expanded = menuAperto,
+                    onDismissRequest = { menuAperto = false }
+                ) {
+                    Terapia.entries.forEach { terapia ->
+                        DropdownMenuItem(
+                            text = { Text(terapia.etichetta) },
+                            onClick = {
+                                terapiaSelezionata = terapia
+                                menuAperto = false
+                            }
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            //Selezione multipla delle patologie concomitanti, in una sezione espandibile.
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { sezionePatologieAperta = !sezionePatologieAperta}
+            ) {
+                Text(text = "Patologie concomitanti (${patologieSelezionate.size})")
+                Icon(
+                    imageVector = Icons.Filled.ArrowDropDown,
+                    contentDescription = "Apri o chiudi l'elenco delle patologie"
+                )
+            }
+
+            if (sezionePatologieAperta) {
+                for (patologia in Patologia.entries) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ){
+                        Checkbox(
+                            checked = patologia in patologieSelezionate,
+                            onCheckedChange = { selezionata ->
+                                if(selezionata) {
+                                    patologieSelezionate.add(patologia)
+                                } else{
+                                    patologieSelezionate.remove(patologia)
+                                }
+                            }
+                        )
+                        Text(text = patologia.etichetta)
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            //Selezione multipla dei vaccini già effettuati, in una sezione espandibile.
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { sezioneVacciniAperta = !sezioneVacciniAperta}
+            ){
+                Text(text = "Vaccinazioni già effettuate (${vacciniEffettuati.size})")
+                Icon(
+                    imageVector = Icons.Filled.ArrowDropDown,
+                    contentDescription = "Apri o chiudi l'elenco delle vaccinazioni"
+                )
+            }
+
+            if (sezioneVacciniAperta){
+                for (vaccino in DatabaseVaccini.vaccini) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ){
+                        Checkbox(
+                            checked = vaccino.nome in vacciniEffettuati,
+                            onCheckedChange = { selezionato ->
+                                if (selezionato) {
+                                    vacciniEffettuati.add(vaccino.nome)
+                                } else {
+                                    vacciniEffettuati.remove(vaccino.nome)
+                                }
+                            }
+                        )
+                        Text(text = vaccino.nome)
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Button(
+                onClick = {
+                    val paziente = Paziente(
+                        eta = etaNumerica ?: 0,
+                        terapia = terapiaSelezionata ?: Terapia.ANTI_TNF,
+                        patologie = patologieSelezionate.toSet(),
+                        vacciniGiaEffettuati = vacciniEffettuati.toSet()
+                    )
+                    onCalcolaClick(paziente)
+                },
+                enabled = datiValidi,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Calcola raccomandazioni")
+            }
         }
     }
 }

@@ -24,7 +24,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.CenterAlignedTopAppBar
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,18 +77,24 @@ fun AppVaccini() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SchermataIniziale(onIniziaClick: () -> Unit) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = "Vaccini in Terapia Biologica")
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = onIniziaClick) {
-            Text(text = "Inizia valutazione")
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(title = { Text("Vaccini in Terapia Biologica") })
+        }
+    ) { spazioInterno ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(spazioInterno)
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Button(onClick = onIniziaClick) {
+                Text(text = "Inizia valutazione")
+            }
         }
     }
 }

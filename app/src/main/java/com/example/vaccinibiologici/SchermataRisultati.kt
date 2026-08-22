@@ -13,27 +13,46 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Surface
 
 //Mostra l'esito della valutazione per ogni vaccino del catalogo.
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SchermataRisultati(paziente: Paziente) {
     val risultati = MotoreRegole.valuta(paziente)
     val risultatiOrdinati = ordinaPerPriorita(risultati)
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(24.dp)
-    ) {
-        Text(text = "Raccomandazioni vaccinali")
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "*  =  Vaccinazione già effettuata secondo la storia vaccinale inserita.")
-        Spacer(modifier = Modifier.height(16.dp))
-
-        for (risultato in risultatiOrdinati){
-            SchedaRisultato(risultato)
-            HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(title = { Text("Raccomandazioni vaccinali") })
+        },
+        bottomBar = {
+            Surface {
+                Text(
+                    text = "*  =  Vaccinazione già effettuata secondo la storia vaccinale inserita.",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                )
+            }
+        }
+    ) { spazioInterno ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(spazioInterno)
+                .verticalScroll(rememberScrollState())
+                .padding(24.dp)
+        ) {
+            for (indice in risultatiOrdinati.indices) {
+                SchedaRisultato(risultatiOrdinati[indice])
+                if (indice < risultatiOrdinati.size - 1) {
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
+                }
+            }
         }
     }
 }
