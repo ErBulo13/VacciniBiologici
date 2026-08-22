@@ -32,6 +32,7 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.ui.platform.LocalFocusManager
 
 /*L'annotazione @OptIn serve per dichiarare che sono consapevole che sto utilizzando una funzionalità
 * che è ancora in via sperimentale e potrebbe quindi ricevere nuove versioni.
@@ -48,6 +49,7 @@ fun SchermataInserimentoDati(onCalcolaClick: (Paziente) -> Unit) {
     var menuAperto by remember { mutableStateOf(false) }
     val etaNumerica = eta.toIntOrNull()
     val datiValidi = etaNumerica != null && etaNumerica >= 0 && terapiaSelezionata != null
+    val gestoreFocus = LocalFocusManager.current
 
     Scaffold(
         topBar = {
@@ -109,7 +111,10 @@ fun SchermataInserimentoDati(onCalcolaClick: (Paziente) -> Unit) {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { sezionePatologieAperta = !sezionePatologieAperta}
+                    .clickable {
+                        gestoreFocus.clearFocus()
+                        sezionePatologieAperta = !sezionePatologieAperta
+                    }
             ) {
                 Text(text = "Patologie concomitanti (${patologieSelezionate.size})")
                 Icon(
@@ -127,6 +132,7 @@ fun SchermataInserimentoDati(onCalcolaClick: (Paziente) -> Unit) {
                         Checkbox(
                             checked = patologia in patologieSelezionate,
                             onCheckedChange = { selezionata ->
+                                gestoreFocus.clearFocus()
                                 if(selezionata) {
                                     patologieSelezionate.add(patologia)
                                 } else{
@@ -146,7 +152,10 @@ fun SchermataInserimentoDati(onCalcolaClick: (Paziente) -> Unit) {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { sezioneVacciniAperta = !sezioneVacciniAperta}
+                    .clickable {
+                        gestoreFocus.clearFocus()
+                        sezioneVacciniAperta = !sezioneVacciniAperta
+                    }
             ){
                 Text(text = "Vaccinazioni già effettuate (${vacciniEffettuati.size})")
                 Icon(
@@ -164,6 +173,7 @@ fun SchermataInserimentoDati(onCalcolaClick: (Paziente) -> Unit) {
                         Checkbox(
                             checked = vaccino.nome in vacciniEffettuati,
                             onCheckedChange = { selezionato ->
+                                gestoreFocus.clearFocus()
                                 if (selezionato) {
                                     vacciniEffettuati.add(vaccino.nome)
                                 } else {
@@ -180,6 +190,7 @@ fun SchermataInserimentoDati(onCalcolaClick: (Paziente) -> Unit) {
 
             Button(
                 onClick = {
+                    gestoreFocus.clearFocus()
                     val paziente = Paziente(
                         eta = etaNumerica ?: 0,
                         terapia = terapiaSelezionata ?: Terapia.ANTI_TNF,
