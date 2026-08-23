@@ -17,6 +17,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Surface
+import androidx.compose.ui.graphics.Color
 
 //Mostra l'esito della valutazione per ogni vaccino del catalogo.
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,7 +66,10 @@ private fun SchedaRisultato(risultato: RisultatoValutazione) {
         Text(text = risultato.vaccino.nome)
 
         val marcatore = if (risultato.giaEffettuato) " *" else ""
-        Text(text = risultato.classificazione.name + marcatore)
+        Text(
+            text = risultato.classificazione.name + marcatore,
+            color = coloreClassificazione(risultato.classificazione)
+        )
 
         if (risultato.motivazioni.isNotEmpty()) {
             Text(text = "Motivazioni:")
@@ -106,4 +110,14 @@ private fun ordinaPerPriorita(
     }
 
     return ordinati
+}
+
+private fun coloreClassificazione(classificazione: Classificazione): Color{
+    if (classificazione == Classificazione.CONTROINDICATO) {
+        return Color(0xFFC62828)
+    }
+    if (classificazione == Classificazione.RACCOMANDATO) {
+        return Color(0xFF2E7D32)
+    }
+    return Color(0xFFF9A825)
 }
