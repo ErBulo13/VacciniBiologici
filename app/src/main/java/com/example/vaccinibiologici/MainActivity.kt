@@ -27,6 +27,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.lifecycle.viewmodel.compose.viewModel
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,12 +46,8 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun AppVaccini() {
+fun AppVaccini(datiPaziente: DatiPaziente = viewModel()) {
     val navController = rememberNavController()
-
-    //Il paziente costruito nella schermata di inserimento viene conservato qui
-    //e passato alla schermata dei risultati.
-    var paziente by remember { mutableStateOf<Paziente?>(null) }
 
     NavHost(
         navController = navController,
@@ -57,19 +55,29 @@ fun AppVaccini() {
     ) {
         composable("iniziale") {
             SchermataIniziale(
-                onIniziaClick = { navController.navigate("inserimento") }
+                onIniziaClick = {
+                    datiPaziente.azzeraDati()
+                    navController.navigate("inserimento")
+                }
             )
         }
         composable("inserimento") {
             SchermataInserimentoDati(
-                onCalcolaClick = { pazienteInserito ->
-                    paziente = pazienteInserito
+                eta = datiPaziente.eta,
+                onEtaChange = { nuovoValore -> datiPaziente.eta = nuovoValore },
+                terapiaSelezionata = datiPaziente.terapiaSelezionata,
+                onTerapiaChange = { terapia -> datiPaziente.terapiaSelezionata = terapia },
+                patologieSelezionate = datiPaziente.patologieSelezionate,
+                vacciniEffettuati = datiPaziente.vacciniEffettuati,
+                onResetClick = { datiPaziente.azzeraDati() },
+                onCalcolaClick = {
+                    datiPaziente.creaPaziente()
                     navController.navigate("risultati")
                 }
             )
         }
-        composable("risultati"){
-            val pazienteCorrente = paziente
+        composable("risultati") {
+            val pazienteCorrente = datiPaziente.paziente
             if (pazienteCorrente != null) {
                 SchermataRisultati(paziente = pazienteCorrente)
             }

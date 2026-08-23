@@ -33,18 +33,24 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.material3.OutlinedButton
 
 /*L'annotazione @OptIn serve per dichiarare che sono consapevole che sto utilizzando una funzionalità
 * che è ancora in via sperimentale e potrebbe quindi ricevere nuove versioni.
 * Qui la funzionalità sperimentale è ExposedDropdownMenuBox, API di Google*/
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SchermataInserimentoDati(onCalcolaClick: (Paziente) -> Unit) {
-    var eta by remember { mutableStateOf("") }
-    val patologieSelezionate = remember {mutableStateListOf<Patologia>() }
+fun SchermataInserimentoDati(
+    eta: String,
+    onEtaChange: (String) -> Unit,
+    terapiaSelezionata: Terapia?,
+    onTerapiaChange: (Terapia) -> Unit,
+    patologieSelezionate: MutableList<Patologia>,
+    vacciniEffettuati: MutableList<String>,
+    onResetClick: () -> Unit,
+    onCalcolaClick: () -> Unit
+) {
     var sezionePatologieAperta by remember {mutableStateOf(false) }
-    var terapiaSelezionata by remember { mutableStateOf<Terapia?>(null) }
-    val vacciniEffettuati = remember { mutableStateListOf<String>() }
     var sezioneVacciniAperta by remember { mutableStateOf(false)}
     var menuAperto by remember { mutableStateOf(false) }
     val etaNumerica = eta.toIntOrNull()
@@ -65,7 +71,7 @@ fun SchermataInserimentoDati(onCalcolaClick: (Paziente) -> Unit) {
         ) {
             OutlinedTextField(
                 value = eta,
-                onValueChange = { nuovoValore -> eta = nuovoValore },
+                onValueChange = {nuovoValore -> onEtaChange(nuovoValore) },
                 label = { Text("Età") },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -96,7 +102,7 @@ fun SchermataInserimentoDati(onCalcolaClick: (Paziente) -> Unit) {
                         DropdownMenuItem(
                             text = { Text(terapia.etichetta) },
                             onClick = {
-                                terapiaSelezionata = terapia
+                                onTerapiaChange(terapia)
                                 menuAperto = false
                             }
                         )
@@ -191,18 +197,24 @@ fun SchermataInserimentoDati(onCalcolaClick: (Paziente) -> Unit) {
             Button(
                 onClick = {
                     gestoreFocus.clearFocus()
-                    val paziente = Paziente(
-                        eta = etaNumerica ?: 0,
-                        terapia = terapiaSelezionata ?: Terapia.ANTI_TNF,
-                        patologie = patologieSelezionate.toSet(),
-                        vacciniGiaEffettuati = vacciniEffettuati.toSet()
-                    )
-                    onCalcolaClick(paziente)
+                    onCalcolaClick()
                 },
                 enabled = datiValidi,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = "Calcola raccomandazioni")
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedButton(
+                onClick = {
+                    gestoreFocus.clearFocus()
+                    onResetClick()
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Azzera campi")
             }
         }
     }
