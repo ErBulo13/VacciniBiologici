@@ -34,6 +34,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.TextStyle
 
 /*L'annotazione @OptIn serve per dichiarare che sono consapevole che sto utilizzando una funzionalità
 * che è ancora in via sperimentale e potrebbe quindi ricevere nuove versioni.
@@ -59,7 +64,19 @@ fun SchermataInserimentoDati(
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(title = { Text("Inserimento dati paziente") })
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(
+                        text = "DATI PAZIENTE",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 25.sp
+                    )
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
+                )
+            )
         }
     ) { spazioInterno ->
         Column(
@@ -73,6 +90,7 @@ fun SchermataInserimentoDati(
                 value = eta,
                 onValueChange = {nuovoValore -> onEtaChange(nuovoValore) },
                 label = { Text("Età") },
+                textStyle = TextStyle(fontSize = 16.sp),
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -89,6 +107,7 @@ fun SchermataInserimentoDati(
                     onValueChange = { },
                     readOnly = true,
                     label = { Text("Terapia biologica") },
+                    textStyle = TextStyle(fontSize = 16.sp),
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = menuAperto) },
                     modifier = Modifier
                         .menuAnchor()
@@ -122,7 +141,10 @@ fun SchermataInserimentoDati(
                         sezionePatologieAperta = !sezionePatologieAperta
                     }
             ) {
-                Text(text = "Patologie concomitanti (${patologieSelezionate.size})")
+                Text(
+                    text = "Patologie concomitanti (${patologieSelezionate.size})",
+                    fontSize = 16.sp
+                )
                 Icon(
                     imageVector = Icons.Filled.ArrowDropDown,
                     contentDescription = "Apri o chiudi l'elenco delle patologie"
@@ -163,7 +185,10 @@ fun SchermataInserimentoDati(
                         sezioneVacciniAperta = !sezioneVacciniAperta
                     }
             ){
-                Text(text = "Vaccinazioni già effettuate (${vacciniEffettuati.size})")
+                Text(
+                    text = "Vaccinazioni già effettuate (${vacciniEffettuati.size})",
+                    fontSize = 16.sp
+                )
                 Icon(
                     imageVector = Icons.Filled.ArrowDropDown,
                     contentDescription = "Apri o chiudi l'elenco delle vaccinazioni"
@@ -200,9 +225,14 @@ fun SchermataInserimentoDati(
                     onCalcolaClick()
                 },
                 enabled = datiValidi,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
             ) {
-                Text(text = "Calcola raccomandazioni")
+                Text(
+                    text = "Calcola raccomandazioni",
+                    fontSize = 18.sp
+                )
             }
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -212,9 +242,14 @@ fun SchermataInserimentoDati(
                     gestoreFocus.clearFocus()
                     onResetClick()
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
             ) {
-                Text(text = "Azzera campi")
+                Text(
+                    text = "Azzera campi",
+                    fontSize = 18.sp
+                )
             }
         }
     }

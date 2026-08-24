@@ -18,6 +18,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Surface
 import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 
 //Mostra l'esito della valutazione per ogni vaccino del catalogo.
 @OptIn(ExperimentalMaterial3Api::class)
@@ -28,10 +32,22 @@ fun SchermataRisultati(paziente: Paziente) {
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(title = { Text("Raccomandazioni vaccinali") })
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(
+                        text = "RACCOMANDAZIONI VACCINALI",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 25.sp
+                    )
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
+                )
+            )
         },
         bottomBar = {
-            Surface {
+            Surface(color = Color(0xFFFFFDE7)) {
                 Text(
                     text = "*  =  Vaccinazione già effettuata secondo la storia vaccinale inserita.",
                     modifier = Modifier
@@ -63,23 +79,35 @@ fun SchermataRisultati(paziente: Paziente) {
 @Composable
 private fun SchedaRisultato(risultato: RisultatoValutazione) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text(text = risultato.vaccino.nome)
+        Text(
+            text = risultato.vaccino.nome,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        )
 
         val marcatore = if (risultato.giaEffettuato) " *" else ""
         Text(
             text = risultato.classificazione.name + marcatore,
-            color = coloreClassificazione(risultato.classificazione)
+            color = coloreClassificazione(risultato.classificazione),
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
         )
 
         if (risultato.motivazioni.isNotEmpty()) {
-            Text(text = "Motivazioni:")
+            Text(
+                text = "Motivazioni:",
+                fontSize = 16.sp
+            )
             for (motivazione in risultato.motivazioni) {
                 Text(text = "• $motivazione")
             }
         }
 
         if (risultato.note.isNotEmpty()) {
-            Text(text = "Note:")
+            Text(
+                text = "Note:",
+                fontSize = 16.sp
+                )
             for (nota in risultato.note) {
                 Text(text = "• $nota")
             }
@@ -117,7 +145,7 @@ private fun coloreClassificazione(classificazione: Classificazione): Color{
         return Color(0xFFC62828)
     }
     if (classificazione == Classificazione.RACCOMANDATO) {
-        return Color(0xFF2E7D32)
+        return Color(0xFF388E3C)
     }
     return Color(0xFFF9A825)
 }
