@@ -59,8 +59,14 @@ fun SchermataInserimentoDati(
     var sezioneVacciniAperta by remember { mutableStateOf(false)}
     var menuAperto by remember { mutableStateOf(false) }
     val etaNumerica = eta.toIntOrNull()
-    val datiValidi = etaNumerica != null && etaNumerica >= 0 && terapiaSelezionata != null
+    //L'errore compare solo se l'utente ha digitato qualcosa.
+    val etaNonValida = eta.isNotEmpty() && (etaNumerica == null || etaNumerica < 0 || etaNumerica > 120)
+    val datiValidi = etaNumerica != null && etaNumerica >= 0 && etaNumerica <= 120 && terapiaSelezionata != null
     val gestoreFocus = LocalFocusManager.current
+    //Controlla se l'utente ha aperto il menù a tendina: se è stato aperto e non è stata selezionata
+    //una terapia, compare il messaggio d'errore.
+    var menuTerapiaVisitato by remember {mutableStateOf(false) }
+    val terapiaNonValida = menuTerapiaVisitato && terapiaSelezionata == null
 
     Scaffold(
         topBar = {
@@ -91,6 +97,12 @@ fun SchermataInserimentoDati(
                 onValueChange = {nuovoValore -> onEtaChange(nuovoValore) },
                 label = { Text("Età") },
                 textStyle = TextStyle(fontSize = 16.sp),
+                isError = etaNonValida,
+                supportingText = {
+                    if (etaNonValida) {
+                        Text( "Inserire un'età valida")
+                    }
+                },
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -108,6 +120,12 @@ fun SchermataInserimentoDati(
                     readOnly = true,
                     label = { Text("Terapia biologica") },
                     textStyle = TextStyle(fontSize = 16.sp),
+                    isError = terapiaNonValida,
+                    supportingText = {
+                        if (terapiaNonValida) {
+                            Text("Selezionare una terapia" )
+                        }
+                    },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = menuAperto) },
                     modifier = Modifier
                         .menuAnchor()
@@ -115,7 +133,10 @@ fun SchermataInserimentoDati(
                 )
                 androidx.compose.material3.DropdownMenu(
                     expanded = menuAperto,
-                    onDismissRequest = { menuAperto = false }
+                    onDismissRequest = {
+                        menuAperto = false
+                        menuTerapiaVisitato = true
+                    }
                 ) {
                     Terapia.entries.forEach { terapia ->
                         DropdownMenuItem(
@@ -240,6 +261,7 @@ fun SchermataInserimentoDati(
             OutlinedButton(
                 onClick = {
                     gestoreFocus.clearFocus()
+                    menuTerapiaVisitato = false
                     onResetClick()
                 },
                 modifier = Modifier
