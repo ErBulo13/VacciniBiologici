@@ -62,8 +62,12 @@ fun AppVaccini(datiPaziente: DatiPaziente = viewModel()) {
                 onIniziaClick = {
                     datiPaziente.azzeraDati()
                     navController.navigate("inserimento")
-                }
+                },
+                onFontiClick = { navController.navigate("fonti") }
             )
+        }
+        composable("fonti") {
+            SchermataFonti()
         }
         composable("inserimento") {
             SchermataInserimentoDati(
@@ -84,48 +88,6 @@ fun AppVaccini(datiPaziente: DatiPaziente = viewModel()) {
             val pazienteCorrente = datiPaziente.paziente
             if (pazienteCorrente != null) {
                 SchermataRisultati(paziente = pazienteCorrente)
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SchermataIniziale(onIniziaClick: () -> Unit) {
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = "VACCINI IN TERAPIA BIOLOGICA",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 25.sp
-                    )
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary
-                )
-            )
-        }
-    ) { spazioInterno ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(spazioInterno)
-                .padding(80.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Button(
-                onClick = onIniziaClick,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-            ) {
-                Text(
-                    text = "Inizia valutazione",
-                    fontSize = 18.sp
-                )
             }
         }
     }
