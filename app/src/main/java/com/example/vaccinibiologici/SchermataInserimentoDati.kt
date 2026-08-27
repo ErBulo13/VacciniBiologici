@@ -56,7 +56,9 @@ fun SchermataInserimentoDati(
     onCalcolaClick: () -> Unit
 ) {
     var sezionePatologieAperta by remember {mutableStateOf(false) }
+    var ricercaPatologie by remember { mutableStateOf("")}
     var sezioneVacciniAperta by remember { mutableStateOf(false)}
+    var ricercaVaccini by remember { mutableStateOf("") }
     var menuAperto by remember { mutableStateOf(false) }
     val etaNumerica = eta.toIntOrNull()
     //L'errore compare solo se l'utente ha digitato qualcosa.
@@ -152,7 +154,8 @@ fun SchermataInserimentoDati(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            //Selezione multipla delle patologie concomitanti, in una sezione espandibile.
+            //Selezione multipla delle patologie concomitanti, in una sezione espandibile,
+            //con barra di ricerca aggiuntiva.
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -173,30 +176,40 @@ fun SchermataInserimentoDati(
             }
 
             if (sezionePatologieAperta) {
+                OutlinedTextField(
+                    value = ricercaPatologie,
+                    onValueChange = { nuovoValore -> ricercaPatologie = nuovoValore },
+                    label = { Text("Cerca")},
+                    modifier = Modifier.fillMaxWidth()
+                )
+
                 for (patologia in Patologia.entries) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ){
-                        Checkbox(
-                            checked = patologia in patologieSelezionate,
-                            onCheckedChange = { selezionata ->
-                                gestoreFocus.clearFocus()
-                                if(selezionata) {
-                                    patologieSelezionate.add(patologia)
-                                } else{
-                                    patologieSelezionate.remove(patologia)
+                    if (patologia.etichetta.contains(ricercaPatologie, ignoreCase = true)) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ){
+                            Checkbox(
+                                checked = patologia in patologieSelezionate,
+                                onCheckedChange = { selezionata ->
+                                    gestoreFocus.clearFocus()
+                                    if(selezionata) {
+                                        patologieSelezionate.add(patologia)
+                                    } else{
+                                        patologieSelezionate.remove(patologia)
+                                    }
                                 }
-                            }
-                        )
-                        Text(text = patologia.etichetta)
+                            )
+                            Text(text = patologia.etichetta)
+                        }
                     }
                 }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            //Selezione multipla dei vaccini già effettuati, in una sezione espandibile.
+            //Selezione multipla dei vaccini già effettuati, in una sezione espandibile,
+            //con barra di ricerca aggiuntiva.
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -217,23 +230,32 @@ fun SchermataInserimentoDati(
             }
 
             if (sezioneVacciniAperta){
-                for (vaccino in DatabaseVaccini.vaccini) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ){
-                        Checkbox(
-                            checked = vaccino.nome in vacciniEffettuati,
-                            onCheckedChange = { selezionato ->
-                                gestoreFocus.clearFocus()
-                                if (selezionato) {
-                                    vacciniEffettuati.add(vaccino.nome)
-                                } else {
-                                    vacciniEffettuati.remove(vaccino.nome)
+                OutlinedTextField(
+                    value = ricercaVaccini,
+                    onValueChange = { nuovoValore -> ricercaVaccini = nuovoValore },
+                    label = { Text("Cerca") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                for (vaccino in DatabaseVaccini.vaccini){
+                    if (vaccino.nome.contains(ricercaVaccini, ignoreCase = true)) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ){
+                            Checkbox(
+                                checked = vaccino.nome in vacciniEffettuati,
+                                onCheckedChange = { selezionato ->
+                                    gestoreFocus.clearFocus()
+                                    if (selezionato) {
+                                        vacciniEffettuati.add(vaccino.nome)
+                                    } else {
+                                        vacciniEffettuati.remove(vaccino.nome)
+                                    }
                                 }
-                            }
-                        )
-                        Text(text = vaccino.nome)
+                            )
+                            Text(text = vaccino.nome)
+                        }
                     }
                 }
             }
@@ -262,6 +284,8 @@ fun SchermataInserimentoDati(
                 onClick = {
                     gestoreFocus.clearFocus()
                     menuTerapiaVisitato = false
+                    ricercaPatologie = ""
+                    ricercaVaccini= ""
                     onResetClick()
                 },
                 modifier = Modifier

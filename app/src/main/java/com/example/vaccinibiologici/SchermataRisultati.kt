@@ -116,26 +116,34 @@ private fun SchedaRisultato(risultato: RisultatoValutazione) {
 }
 
 //L'ordine di visualizzazione è: CONTROINDICATI, RACCOMANDATI, POSSIBILI.
+//Ogni sezione è ordinata alfabeticamente.
 private fun ordinaPerPriorita(
     risultati: List<RisultatoValutazione>
 ): List<RisultatoValutazione> {
-    val ordinati = mutableListOf<RisultatoValutazione>()
+    val controindicati= mutableListOf<RisultatoValutazione>()
+    val raccomandati = mutableListOf<RisultatoValutazione>()
+    val possibili = mutableListOf<RisultatoValutazione>()
 
     for (risultato in risultati){
         if (risultato.classificazione == Classificazione.CONTROINDICATO) {
-            ordinati.add(risultato)
+            controindicati.add( risultato)
         }
-    }
-    for (risultato in risultati) {
         if (risultato.classificazione == Classificazione.RACCOMANDATO) {
-            ordinati.add(risultato)
+            raccomandati.add(risultato)
         }
-    }
-    for (risultato in risultati) {
         if (risultato.classificazione == Classificazione.POSSIBILE){
-            ordinati.add(risultato)
+            possibili.add(risultato )
         }
     }
+
+    controindicati.sortBy { risultato -> risultato.vaccino.nome}
+    raccomandati.sortBy { risultato -> risultato.vaccino.nome }
+    possibili.sortBy { risultato -> risultato.vaccino.nome }
+
+    val ordinati = mutableListOf<RisultatoValutazione>()
+    ordinati.addAll(controindicati)
+    ordinati.addAll(raccomandati)
+    ordinati.addAll(possibili)
 
     return ordinati
 }
