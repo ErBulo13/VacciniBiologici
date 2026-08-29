@@ -82,7 +82,7 @@ private fun SchedaRisultato(risultato: RisultatoValutazione) {
         Text(
             text = risultato.vaccino.nome,
             fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.ExtraBold
         )
 
         val marcatore = if (risultato.giaEffettuato) " *" else ""
@@ -93,10 +93,23 @@ private fun SchedaRisultato(risultato: RisultatoValutazione) {
             fontWeight = FontWeight.Bold
         )
 
+        if (risultato.indicazione.isNotEmpty()) {
+            val intestazione = if (risultato.giaEffettuato) "Richiamo:" else "Somministrazione:"
+            Text(
+                text = intestazione,
+                fontSize = 16.sp,
+                fontWeight =FontWeight.Bold,
+                color = Color.DarkGray
+            )
+            Text(text = "• ${risultato.indicazione}")
+        }
+
         if (risultato.motivazioni.isNotEmpty()) {
             Text(
                 text = "Motivazioni:",
-                fontSize = 16.sp
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.DarkGray
             )
             for (motivazione in risultato.motivazioni) {
                 Text(text = "• $motivazione")
@@ -106,7 +119,9 @@ private fun SchedaRisultato(risultato: RisultatoValutazione) {
         if (risultato.note.isNotEmpty()) {
             Text(
                 text = "Note:",
-                fontSize = 16.sp
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.DarkGray
                 )
             for (nota in risultato.note) {
                 Text(text = "• $nota")

@@ -10,5 +10,6 @@ data class RisultatoValutazione(
     val classificazione: Classificazione,
     val motivazioni: List<String> = emptyList(),
     val note: List<String> = emptyList(),
-    val giaEffettuato: Boolean = false
+    val giaEffettuato: Boolean = false,
+    val indicazione: String = ""
 )

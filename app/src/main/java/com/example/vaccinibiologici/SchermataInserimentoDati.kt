@@ -278,7 +278,7 @@ fun SchermataInserimentoDati(
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             OutlinedButton(
                 onClick = {

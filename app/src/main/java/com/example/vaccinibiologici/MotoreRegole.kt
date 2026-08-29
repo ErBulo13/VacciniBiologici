@@ -24,7 +24,8 @@ object MotoreRegole {
             return RisultatoValutazione(
                 vaccino = vaccino,
                 classificazione = Classificazione.POSSIBILE,
-                giaEffettuato = giaEffettuato
+                giaEffettuato = giaEffettuato,
+                indicazione = indicazionePer(vaccino, Classificazione.POSSIBILE, giaEffettuato)
             )
         }
 
@@ -56,7 +57,8 @@ object MotoreRegole {
             classificazione = classificazioneFinale,
             motivazioni = motivazioni,
             note = note,
-            giaEffettuato = giaEffettuato
+            giaEffettuato = giaEffettuato,
+            indicazione = indicazionePer(vaccino, classificazioneFinale, giaEffettuato)
         )
     }
 
@@ -83,5 +85,20 @@ object MotoreRegole {
         }
 
         return esiti
+    }
+
+    //Indicazioni sulla somministrazione, mostrate solo per i vaccini raccomandati.
+    private fun indicazionePer(
+        vaccino: Vaccino,
+        classificazione: Classificazione,
+        giaEffettuato: Boolean
+    ): String {
+        if (classificazione != Classificazione.RACCOMANDATO) {
+            return ""
+        }
+        if (giaEffettuato){
+            return vaccino.schedaRichiamo
+        }
+        return vaccino.schedaSomministrazione
     }
 }

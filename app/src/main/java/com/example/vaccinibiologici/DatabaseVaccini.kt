@@ -14,6 +14,8 @@ object DatabaseVaccini {
         Vaccino(
             nome = "Antinfluenzale inattivato",
             vivoAttenuato = false,
+            schedaSomministrazione = "Dose singola annuale",
+            schedaRichiamo = "Rivaccinazione annuale indipendentemente dalle dosi precedenti",
             regoleEta = listOf(
                 RegolaEta(
                     fascia = FasciaEta(),
@@ -48,6 +50,7 @@ object DatabaseVaccini {
         Vaccino(
             nome = "Pneumococcico coniugato (PCV20)",
             vivoAttenuato = false,
+            schedaSomministrazione = "Dose singola",
             regoleEta = listOf(
                 RegolaEta(
                     fascia = FasciaEta(),
@@ -87,6 +90,8 @@ object DatabaseVaccini {
         Vaccino(
             nome = "Pneumococcico polisaccaridico (PPSV23)",
             vivoAttenuato = false,
+            schedaSomministrazione = "Dose singola dopo il vaccino coniugato, con intervallo minimo di 8 settimane nel paziente immunocompromesso",
+            schedaRichiamo = "Non sono previste dosi aggiuntive",
             regoleEta = listOf(
                 RegolaEta(
                     fascia = FasciaEta(),
@@ -111,6 +116,8 @@ object DatabaseVaccini {
         Vaccino(
             nome = "COVID-19",
             vivoAttenuato = false,
+            schedaSomministrazione = "Ciclo iniziale di 3 dosi seguito da una quarta dose a 6 mesi nel paziente immunocompromesso",
+            schedaRichiamo = "Dosi aggiuntive valutabili ad almeno 2 mesi dall'ultima dose",
             regoleEta = listOf(
                 RegolaEta(
                     fascia = FasciaEta(),
@@ -123,6 +130,8 @@ object DatabaseVaccini {
         Vaccino(
             nome = "Herpes Zoster ricombinante (Shingrix)",
             vivoAttenuato = false,
+            schedaSomministrazione = "2 dosi a distanza di 2-6 mesi",
+            schedaRichiamo ="Non sono previste dosi aggiuntive",
             regoleEta = listOf(
                 RegolaEta(
                     fascia = FasciaEta(massima = 17),
@@ -154,6 +163,8 @@ object DatabaseVaccini {
         Vaccino(
             nome = "Epatite B",
             vivoAttenuato = false,
+            schedaSomministrazione = "Ciclo di 2, 3 o 4 dosi secondo la formulazione, con dosaggio aumentato nel paziente immunocompromesso",
+            schedaRichiamo = "Non sono previste dosi aggiuntive",
             regolePatologia = listOf(
                 RegolaPatologia(
                     patologia = Patologia.INSUFFICIENZA_RENALE_CRONICA,
@@ -188,6 +199,8 @@ object DatabaseVaccini {
         Vaccino(
             nome = "Epatite A",
             vivoAttenuato = false,
+            schedaSomministrazione = "2 dosi a distanza di almeno 6 mesi",
+            schedaRichiamo = "Non sono previste dosi aggiuntive",
             regolePatologia = listOf(
                 RegolaPatologia(
                     patologia = Patologia.EPATOPATIA_CRONICA,
@@ -205,6 +218,8 @@ object DatabaseVaccini {
         Vaccino(
             nome = "Difterite-Tetano-Pertosse (dTpa)",
             vivoAttenuato = false,
+            schedaSomministrazione = "Ciclo primario di 3 dosi, la seconda ad almeno 4 settimane e la terza a 6-12 mesi",
+            schedaRichiamo = "Ogni 10 anni",
             regoleEta = listOf(
                 RegolaEta(
                     fascia = FasciaEta(),
@@ -224,6 +239,8 @@ object DatabaseVaccini {
         Vaccino(
             nome = "HPV (Papillomavirus)",
             vivoAttenuato = false,
+            schedaSomministrazione= "Ciclo di 3 dosi a 0, 1-2 e 6 mesi nel paziente immunocompromesso",
+            schedaRichiamo = "Non sono previste dosi aggiuntive",
             regoleEta = listOf(
                 RegolaEta(
                     fascia = FasciaEta(massima = 8),
@@ -263,6 +280,8 @@ object DatabaseVaccini {
         Vaccino(
             nome = "Meningococco ACWY",
             vivoAttenuato = false,
+            schedaSomministrazione = "Ciclo primario di 2 dosi a distanza di almeno 8 settimane",
+            schedaRichiamo ="A 5 anni dal ciclo primario e successivamente ogni 5 anni se il rischio persiste",
             regolePatologia = listOf(
                 RegolaPatologia(
                     patologia = Patologia.ASPLENIA,
@@ -285,6 +304,8 @@ object DatabaseVaccini {
         Vaccino(
             nome = "Meningococco B",
             vivoAttenuato = false,
+            schedaSomministrazione = "Ciclo primario di 3 dosi a 0, 1-2 e 6 mesi",
+            schedaRichiamo= "A un anno dal ciclo primario e successivamente ogni 2 o 3 anni se il rischio persiste",
             regolePatologia = listOf(
                 RegolaPatologia(
                     patologia = Patologia.ASPLENIA,
@@ -307,6 +328,8 @@ object DatabaseVaccini {
         Vaccino(
             nome = "Haemophilus influenzae tipo b",
             vivoAttenuato = false,
+            schedaSomministrazione = "Dose singola",
+            schedaRichiamo = "Non sono previste dosi aggiuntive",
             regolePatologia = listOf(
                 RegolaPatologia(
                     patologia = Patologia.ASPLENIA,
@@ -324,6 +347,8 @@ object DatabaseVaccini {
         Vaccino(
             nome = "Virus Respiratorio Sinciziale (RSV)",
             vivoAttenuato = false,
+            schedaSomministrazione = "Dose singola",
+            schedaRichiamo = "Non sono previste dosi aggiuntive",
             regoleEta = listOf(
                 RegolaEta(
                     fascia = FasciaEta(massima = 49),
